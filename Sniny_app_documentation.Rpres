@@ -1,0 +1,66 @@
+Course Project: Shiny Application and Reproducible Pitch
+========================================================
+author: Daria Karpova
+date: 12.05.2021
+autosize: true
+
+About the project
+========================================================
+
+This project is created for the 'Developing Data Products' course on Coursera conducted by The Jonh's Hopkins University. The presented application is a simple calculator with the abilities to sum, subtract, multiply, divide and take to a power. A user needs to choose the first number, the second and the operation they want to perform on the numbers. Then the result is shown below.
+
+Instructions:
+
+1. Write a shiny application with associated supporting documentation. The documentation should be thought of as whatever a user will need to get started using your application.
+2. Deploy the application on Rstudio's shiny server
+3. Share the application link by pasting it into the provided text box
+4. Share your server.R and ui.R code on github
+
+Application Interface
+========================================================
+
+![alt text](app.jpg)
+
+
+ui.R code
+========================================================
+
+```{r}
+library(shiny)
+
+shinyUI(fluidPage(
+    titlePanel("Simple Shiny Calculator"),
+    sidebarLayout(
+        mainPanel(
+            h5("This is a simple calculator. 
+        You put the first and the second number,
+        select the operator and voila!"),
+            numericInput("num1", "First number", 0),
+            numericInput("num2", "Second number", 0),
+            selectInput("operator", "Operation",
+                        choices = c("+","-","*", "/", "^"))
+        ),
+        mainPanel(
+            h2("The result is:"),
+            textOutput("output")
+        ))))
+```
+
+server.R code
+========================================================
+
+```{r}
+library(shiny)
+
+shinyServer(function(input, output) {
+    output$output <- renderText({
+        switch(input$operator,
+               "+" = input$num1 + input$num2,
+               "-" = input$num1 - input$num2,
+               "*" = input$num1 * input$num2,
+               "/" = input$num1 / input$num2,
+               "^" = input$num1^(input$num2))
+    })
+})
+```
+
